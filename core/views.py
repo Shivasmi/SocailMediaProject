@@ -45,6 +45,22 @@ def signup(request):
     
 
 
+def signin(request):
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+
+        user = auth.authenticate(username=username, password=password)
+
+        if user is not None:
+            auth.login(request, user)
+            return redirect ('/')
+        else: 
+            messages.info (request, "username or password is not matched")
+            return redirect ('signin')
+    else: 
+        return render(request, 'signin.html')
 
 
 
