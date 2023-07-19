@@ -1,4 +1,4 @@
-# SocailMediaProject
+
 # Social Media Application - README
 An overview of the Social Media Application, which is developed using the Python Django web framework, with sqlite as the database. The application aims to fulfill various functional requirements to create a dynamic and interactive social media platform.
 
