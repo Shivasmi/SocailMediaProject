@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 from django.contrib.auth import get_user_model
 
 
@@ -14,4 +15,6 @@ class User_Profile(models.Model):
     def __str__(self):
         return self.username 
     
-
+class Post(models.Model):
+    user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False )
+    
