@@ -1,16 +1,17 @@
 from django.db import models
 import uuid
 from django.contrib.auth import get_user_model
-
+from datetime import datetime
 
 User = get_user_model()
 
 # Create your models here.
-class User_Profile(models.Model):
+class Profile(models.Model):
     user =models.ForeignKey(User, on_delete=models.CASCADE)
+    id_user = models.IntegerField()
     bio = models.TextField(blank=True, null = True, max_length= 250)
-    profileimg = models.ImageField(upload_to='profile_images', default='')
-    location = models.CharField(max_length=100, blank=True, null= True)
+    profileimg = models.ImageField(upload_to='profile_images', default='blank-profile-picture.png')
+    location = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
         return self.username 
@@ -25,4 +26,35 @@ class Post(models.Model):
 
     def __str__(self):
         return self.user 
+
+class LikePost(models.Model):
+    post_id = models.CharField(max_length=100)
+    username= models.CharField(max_length=200)
+    content=models.TextField(max_length=800)
+    likes=models.ManyToManyField(User)
+
+    def get_likes_count(self):
+        return self.likes.count()
+    
+    def __str__(self):
+        return self.username
+    
+class FollowersCount(models.Model):
+    follower = models.CharField(max_length=100)
+    user = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.user 
+    
+class UserAddressInformation(models.Model):
+    user = models.CharField(max_length= 100)
+    address = models.CharField(max_length= 300)
+
+    def __str__(self):
+        return self.address
+
+
+
+    
+
 
