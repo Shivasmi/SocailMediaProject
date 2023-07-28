@@ -167,7 +167,7 @@ def signin(request):
 def profile(request, pk):
     user_object = User.objects.get(username=pk)
     user_profile = Profile.objects.get(user=user_object)
-    user_posts = Post.objects.filter(user=pk)
+    user_posts = Post.objects.filter(user=pk) 
     user_post_length = len(user_posts)
 
     follower = request.user.username
@@ -227,3 +227,12 @@ def logout(request):
 @login_required(login_url='sigin')
 def personal_info(request):
     return render(request, 'personal_info.html')
+
+@login_required(login_url='signin')
+def user_comment(request):
+    return render (request, 'user_comment.html')
+
+def repost(request):
+    posts = Post.objects.all()
+    context = {'posts': posts}
+    return render (request, 'repost.html', context)
