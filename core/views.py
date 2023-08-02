@@ -57,8 +57,6 @@ def index(request):
     return render(request, 'index.html', {'user_profile': user_profile, 'posts':feed_list, 'suggestions_username_profile_list': suggestions_username_profile_list[:4]})
 
 
-
-
 @login_required(login_url='signin')
 def settings(request):
     user_profile = Profile.objects.get(user=request.user)
@@ -169,27 +167,28 @@ def profile(request, pk):
     user_profile = Profile.objects.get(user=user_object)
     user_posts = Post.objects.filter(user=pk) 
     user_post_length = len(user_posts)
+   
 
     follower = request.user.username
     user = pk
 
     if FollowersCount.objects.filter(follower=follower, user=user).first():
-        button_text = 'Unfollow'
+         button_text = 'Unfollow'
     else:
-        button_text = 'Follow'
+         button_text = 'Follow'
 
     user_followers = len(FollowersCount.objects.filter(user=pk))
     user_following = len(FollowersCount.objects.filter(follower=pk))
 
     context = {
-        'user_object': user_object,
+       'user_object': user_object,
         'user_profile': user_profile,
         'user_posts': user_posts,
         'user_post_length': user_post_length,
         'button_text': button_text,
         'user_followers': user_followers,
         'user_following': user_following,
-    }
+     }
     return render(request, 'profile.html', context)
 
 @login_required(login_url='signin')
@@ -209,16 +208,27 @@ def follow(request):
     else:
         return redirect('/')
 
-def Post (request):
-    pass 
 
 @login_required (login_url='signin')
 def LikePost(request):
     posts = Post.objects.all()
     context = {'posts': posts}
-    return render (request, 'likepost.html' )
 
+    return render (request, 'likepost.html', context )
 
+@login_required (login_url='signin')
+def upload(request):
+    if request.method == 'POST':
+        user =request.user.username
+        image =request.FILES.get('image_upload')
+        caption =request.POST['caption']
+
+        new_post = Post.objects.create(user=user, image=image, caption=caption)
+        new_post.save()
+        return redirect('/')
+    else:
+        return redirect('/')
+    
 @login_required(login_url='signin')
 def logout(request):
     auth.logout(request)
@@ -232,6 +242,7 @@ def personal_info(request):
 def user_comment(request):
     return render (request, 'user_comment.html')
 
+@login_required(login_url='signin')
 def repost(request):
     posts = Post.objects.all()
     context = {'posts': posts}
