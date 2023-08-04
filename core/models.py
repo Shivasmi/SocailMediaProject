@@ -69,7 +69,19 @@ class Repost(models.Model):
     def __str__(self):
         return f"{self.user.username} reposted {self.original_post}"
     
+
+class Notification(models.Model):
+    likepost= models.CharField(max_length=100)
+    likeby = models.ManyToManyField(to=Post)
     
+    def __str__(self):
+        return f"{self.user.username} notification {self.likepost} likeby {self.user}"
+    
+
+        
+    
+
+ 
 
 
     

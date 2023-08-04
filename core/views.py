@@ -210,11 +210,25 @@ def follow(request):
 
 
 @login_required (login_url='signin')
-def LikePost(request):
-    posts = Post.objects.all()
-    context = {'posts': posts}
+def likePost(request):
+    username = request.user.username 
+    post_id = request.GET.get(post_id)
+    
+    post = Post.objects.get(id = post_id)
+    like_filter = LikePost.objects.filter(post_id=post_id, username=username)
 
-    return render (request, 'likepost.html', context )
+    if like_filter == None:
+        new_like = LikePost.objects.create(post_id=post_id, username=username)
+        new_like.save()
+        post.no_of_likes = post.no_of_likes+1 
+        post.save()
+        return redirect ('/')
+    else:
+        like_filter.delete()
+        post.no_of_likes = post.no_of_likes-1
+        post.save()
+        return redirect('/')
+
 
 @login_required (login_url='signin')
 def upload(request):
@@ -247,3 +261,9 @@ def repost(request):
     posts = Post.objects.all()
     context = {'posts': posts}
     return render (request, 'repost.html', context)
+
+@login_required(login_url='signin')
+def notification(request): 
+    likepost = Post.objects.all()
+    return render(request, likepost )
+
