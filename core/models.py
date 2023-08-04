@@ -72,10 +72,12 @@ class Repost(models.Model):
 
 class Notification(models.Model):
     likepost= models.CharField(max_length=100)
-    likeby = models.ManyToManyField(to=Post)
+    usercomment = models.ForeignKey(Post, max_length= 200, default= '', related_name='comment_notifications', on_delete=models.CASCADE)
+    repost = models.ForeignKey(Post, related_name='repost_notifications', default= True, on_delete=models.CASCADE)
+    likeby = models.ForeignKey(User, related_name='like_notifications', default= '', on_delete=models.CASCADE)
     
     def __str__(self):
-        return f"{self.user.username} notification {self.likepost} likeby {self.user}"
+        return f"{self.user.username} notification {self.likepost} likeby {self.user} usercommet {self.user} repost {self.user}"
     
 
         

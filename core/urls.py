@@ -17,4 +17,5 @@ urlpatterns = [
     path('personal_info', views.personal_info, name='personal_info'),
     path('user_comment', views.user_comment, name = 'user_comment'),
     path('repost', views.repost, name = 'repost'),
+    path( 'notification', views.notification, name = 'notification'),
 ]

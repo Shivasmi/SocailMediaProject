@@ -3,7 +3,7 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from .models import Profile, Post, LikePost, FollowersCount
+from .models import Profile, Post, LikePost, FollowersCount, Notification 
 from itertools import chain
 import random
 
@@ -264,6 +264,6 @@ def repost(request):
 
 @login_required(login_url='signin')
 def notification(request): 
-    likepost = Post.objects.all()
-    return render(request, likepost )
+    notification = notification.objects.all()
+    return render (request, 'notification.html' )
 
