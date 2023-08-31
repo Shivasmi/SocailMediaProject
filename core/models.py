@@ -14,7 +14,7 @@ class Profile(models.Model):
     location = models.CharField(max_length=100, blank=True)
 
     def __str__(self):
-        return self.username 
+        return self.user.username 
     
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False )
@@ -22,7 +22,7 @@ class Post(models.Model):
     image = models.ImageField(upload_to='post_images')
     caption = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    num_of_likes = models.IntegerField(default=0)
+    no_of_likes = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user 
@@ -32,6 +32,7 @@ class LikePost(models.Model):
     username= models.CharField(max_length=200)
     content=models.TextField(max_length=800)
     likes=models.ManyToManyField(User)
+    no_of_likes = models.IntegerField(default=0)
 
     def get_likes_count(self):
         return self.likes.count()
@@ -53,6 +54,37 @@ class UserAddressInformation(models.Model):
     def __str__(self):
         return self.address
 
+class UserComment(models.Model):
+    user = models.CharField(max_length =100)
+    comment = models.CharField(max_length=300)
+
+    def __str__(self):
+        return self.comment
+    
+
+class Repost(models.Model):
+    user_repost = models.TextField(max_length= 100, default= '', blank=True)
+    original_post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='reposts')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.username} reposted {self.original_post}"
+    
+
+class Notification(models.Model):
+    likepost= models.CharField(max_length=100)
+    usercomment = models.ForeignKey(Post, max_length= 200, default= '', related_name='comment_notifications', on_delete=models.CASCADE)
+    repost = models.ForeignKey(Post, related_name='repost_notifications', default= True, on_delete=models.CASCADE)
+    likeby = models.ForeignKey(User, related_name='like_notifications', default= '', on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"{self.user.username} notification {self.likepost} likeby {self.user} usercommet {self.user} repost {self.user}"
+    
+
+        
+    
+
+ 
 
 
     

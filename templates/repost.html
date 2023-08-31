@@ -1,0 +1,21 @@
+<!-- repost_list.html -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Repost List</title>
+</head>
+<body>
+    <h1>Reposts for "{{ original_post.content }}"</h1>
+    <ul>
+        {% for repost in reposts %}
+            <li>
+                {{ repost.user_repost }} reposted this post on {{ repost.created_at }}
+            </li>
+        {% empty %}
+            <li>No reposts yet.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
